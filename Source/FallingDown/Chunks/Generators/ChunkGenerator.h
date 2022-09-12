@@ -38,6 +38,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
 	int32 ChunksGenerationCount = 50;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
+	float ChunkGenerationOffset = 10000.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
+	float ChunkRemoveOffset = 1000.0f;
+
 private:
 
 	void GenerateInitialChunks();
