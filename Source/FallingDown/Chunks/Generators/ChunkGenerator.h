@@ -29,11 +29,32 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
 	UDataTable* ChunksDataTable;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
+	float ChunkUpdatePeriod = 0.05f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
+	TSubclassOf<AChunk> DefaultChunksClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
+	int32 ChunksGenerationCount = 50;
+
 private:
 
 	void GenerateInitialChunks();
 
 	void SpawnChunk(TSubclassOf<AChunk> Chunk);
 
+	void UpdatePlayerPawnsList();
+
+	void DestroyLastChunk();
+
+	void DynamicChunkGeneration();
+
 	FVector LastChunkPosition;
+
+	TArray<AChunk*> Chunks;
+
+	TArray<APawn*> PlayerPawns;
+
+	
 };
