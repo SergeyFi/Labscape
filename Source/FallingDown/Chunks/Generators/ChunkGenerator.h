@@ -44,6 +44,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
 	float ChunkRemoveOffset = 1000.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
+	float ChunkScale = 1.0f;
+
 private:
 
 	void GenerateInitialChunks();

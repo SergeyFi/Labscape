@@ -5,6 +5,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
+#include "FallingDown/Chunks/ChunkFunctionLibrary.h"
 
 // Sets default values
 AChunkGenerator::AChunkGenerator()
@@ -54,8 +55,9 @@ void AChunkGenerator::GenerateInitialChunks()
 }
 
 void AChunkGenerator::SpawnChunk(TSubclassOf<AChunk> Chunk)
-{
-	auto NewChunk = GetWorld()->SpawnActor<AChunk>(Chunk, LastChunkPosition, GetActorRotation());
+{;
+	auto NewChunk = GetWorld()->SpawnActor<AChunk>(Chunk, LastChunkPosition, UChunkFunctionLibrary::GetBlockRandomRotation());
+	NewChunk->SetActorScale3D({ChunkScale, ChunkScale, ChunkScale});
 
 	LastChunkPosition = NewChunk->GetActorLocation() - NewChunk->GetChunkSize();
 
