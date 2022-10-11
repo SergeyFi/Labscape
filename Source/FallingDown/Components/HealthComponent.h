@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthEvent, int32, Health);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class FALLINGDOWN_API UHealthComponent : public UActorComponent
@@ -18,6 +19,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Health")
 	int32 GetHealth() const;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FHealthEvent OnHealtCountChanged;
 
 protected:
 
