@@ -16,6 +16,11 @@ void UActorSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (GetOwnerRole() != ROLE_Authority)
+	{
+		return;
+	}
+
 	if (ActorClassToSpawn && FMath::RandRange(0.0f, 1.0f) <= SpawnProbability)
 	{
 		FActorSpawnParameters Params;
