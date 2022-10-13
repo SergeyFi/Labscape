@@ -31,5 +31,8 @@ void UUIComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InitSubmodules();
+	if (GetOwnerRole() != ROLE_Authority)
+	{
+		InitSubmodules();
+	}
 }
