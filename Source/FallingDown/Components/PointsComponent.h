@@ -29,5 +29,8 @@ public:
 private:
 
 	int32 Points;
+
+	UFUNCTION(Client, Reliable)
+	void UpdatePoints(int32 Count);
 		
 };

@@ -31,7 +31,7 @@ void UUIComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GetOwnerRole() != ROLE_Authority)
+	if (GetOwner()->GetNetMode() == ENetMode::NM_Standalone || GetOwner()->GetNetMode() == ENetMode::NM_Client)
 	{
 		InitSubmodules();
 	}
