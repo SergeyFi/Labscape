@@ -11,22 +11,3 @@ FRotator UChunkFunctionLibrary::GetBlockRandomRotation()
 
 	return {0.0f, RotationsZ[RandomIndex], 0.0f};
 }
-
-void UChunkFunctionLibrary::RandomRotateInstances(UInstancedStaticMeshComponent* MeshInstances)
-{
-	if (MeshInstances)
-	{
-		auto InstanceCount = MeshInstances->GetInstanceCount();
-
-		FTransform InstanceTransform;
-		
-		for (auto i = 0; i < InstanceCount; ++i)
-		{
-			MeshInstances->GetInstanceTransform(i, InstanceTransform);
-
-			InstanceTransform.SetRotation(GetBlockRandomRotation().Quaternion());
-			
-			MeshInstances->UpdateInstanceTransform(i, InstanceTransform, false, true);
-		}
-	}
-}

@@ -18,7 +18,4 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Chunk")
 	static FRotator GetBlockRandomRotation();
-
-	UFUNCTION(BlueprintCallable, Category = "Chunk")
-	static void RandomRotateInstances(UInstancedStaticMeshComponent* MeshInstances);
 };
