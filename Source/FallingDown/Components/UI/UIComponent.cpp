@@ -14,15 +14,7 @@ void UUIComponent::InitSubmodules()
 {
 	for (auto& SubComponent : Subcomponents)
 	{
-		if (SubComponent)
-		{
-			auto Pawn = GetOwner<APawn>();
-
-			if (Pawn)
-			{
-				SubComponent->Init(Pawn->GetController<APlayerController>());
-			}
-		}
+		SubComponent->Init(GetOwner<APawn>());
 	}
 }
 

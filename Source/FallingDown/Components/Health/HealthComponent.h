@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "HealthSubcomponent.h"
 #include "HealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthEvent, int32, Health);
@@ -17,14 +18,27 @@ public:
 	// Sets default values for this component's properties
 	UHealthComponent();
 
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void AddDamage(int32 Damage);
+
 	UFUNCTION(BlueprintPure, Category = "Health")
 	int32 GetHealth() const;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Health")
-	FHealthEvent OnHealtCountChanged;
+	FHealthEvent OnHealthCountChanged;
 
 protected:
 
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	int32 Health;
+
+	UPROPERTY(EditDefaultsOnly, Instanced, Category = "Health")
+	TArray<UHealthSubcomponent*> Subcomponents;
+
+private:
+
+	UFUNCTION(Client, Reliable)
+	void UpdateHealthOnClient(int32 HealthCount);
 };
