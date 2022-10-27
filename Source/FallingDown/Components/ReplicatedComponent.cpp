@@ -6,7 +6,7 @@
 // Sets default values for this component's properties
 UReplicatedComponent::UReplicatedComponent()
 {
-	SetIsReplicated(true);
+	SetIsReplicatedByDefault(true);
 }
 
 void UReplicatedComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

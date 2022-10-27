@@ -8,7 +8,7 @@
 UHealthComponent::UHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	SetIsReplicated(true);
+	SetIsReplicatedByDefault(true);
 }
 
 void UHealthComponent::AddDamage(int32 Damage)
