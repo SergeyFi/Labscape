@@ -1,3 +1,4 @@
 sound_whoosh_01.wav - https://freesound.org/people/myfox14/sounds/405456/
 sound_wind_01.wav - https://freesound.org/people/kyles/sounds/454360/
 sound_pickup.wav - https://freesound.org/people/BeezleFM/sounds/512138/
+sound_damage.wav - https://freesound.org/people/TheDweebMan/sounds/277213/
