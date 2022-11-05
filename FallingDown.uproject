@@ -21,10 +21,6 @@
 			"Enabled": false
 		},
 		{
-			"Name": "ChaosEditor",
-			"Enabled": false
-		},
-		{
 			"Name": "AlembicImporter",
 			"Enabled": false
 		},
@@ -207,6 +203,14 @@
 		{
 			"Name": "KDevelopSourceCodeAccess",
 			"Enabled": false
+		},
+		{
+			"Name": "ChaosNiagara",
+			"Enabled": false
+		},
+		{
+			"Name": "ChaosCaching",
+			"Enabled": true
 		}
 	]
 }
