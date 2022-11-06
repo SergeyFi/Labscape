@@ -93,7 +93,7 @@ void AChunkGenerator::DynamicChunkGeneration()
 		
 	if (PlayerPawns.Num() != 0 && Chunks.Num() != 0)
 	{
-		if (PlayerPawns.Last()->GetActorLocation().Z + 1000.0f < Chunks[0]->GetActorLocation().Z)
+		if (PlayerPawns.Last()->GetActorLocation().Z + ChunkRemoveOffset < Chunks[0]->GetActorLocation().Z)
 		{
 			DestroyLastChunk();
 		}
