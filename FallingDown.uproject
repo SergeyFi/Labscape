@@ -213,6 +213,10 @@
 		{
 			"Name": "ChaosCaching",
 			"Enabled": true
+		},
+		{
+			"Name": "FieldSystemPlugin",
+			"Enabled": true
 		}
 	]
 }
