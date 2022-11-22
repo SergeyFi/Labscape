@@ -7,7 +7,7 @@
 #include "Chunk.generated.h"
 
 
-UCLASS()
+UCLASS(Abstract)
 class FALLINGDOWN_API AChunk : public AActor
 {
 	GENERATED_BODY()
