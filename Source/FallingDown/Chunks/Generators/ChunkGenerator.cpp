@@ -33,7 +33,7 @@ void AChunkGenerator::Tick(float DeltaTime)
 
 	if (HasAuthority())
 	{
-		//DynamicChunkGeneration();
+		DynamicChunkGeneration();
 	}
 }
 
@@ -61,7 +61,7 @@ AChunk* AChunkGenerator::SpawnChunk(TSubclassOf<AChunk> Chunk)
 
 	LastChunkPosition = NewChunk->GetActorLocation() - NewChunk->GetChunkSize();
 
-	Chunks.Enqueue(NewChunk);
+	Chunks.Add(NewChunk);
 
 	return NewChunk;
 }
@@ -85,15 +85,27 @@ void AChunkGenerator::UpdatePlayerPawnsList()
 
 void AChunkGenerator::DestroyLastChunk()
 {
-	AChunk* LastChunk;
-	
-	if (Chunks.Dequeue(LastChunk))
-	{
-		LastChunk->Destroy();
-	}
+	Chunks[0]->Destroy();
+	Chunks.RemoveAt(0);
 }
 
 void AChunkGenerator::DynamicChunkGeneration()
 {
 	UpdatePlayerPawnsList();
+		
+	if (PlayerPawns.Num() != 0 && Chunks.Num() >= 1)
+	{
+		if (PlayerPawns.Last()->GetActorLocation().Z + ChunkRemoveOffset < Chunks[0]->GetActorLocation().Z)
+		{
+			DestroyLastChunk();
+		}
+			
+		if (PlayerPawns[0]->GetActorLocation().Z + -ChunkGenerationOffset < Chunks.Last()->GetActorLocation().Z)
+		{
+			for (auto i = 0; i < ChunksGenerationCount; ++i)
+			{
+				SpawnChunk(DefaultChunksClass);
+			}
+		}
+	}
 }

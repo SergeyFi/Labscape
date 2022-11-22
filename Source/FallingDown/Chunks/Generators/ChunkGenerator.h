@@ -63,5 +63,5 @@ private:
 
 	TArray<APawn*> PlayerPawns;
 
-	TQueue<AChunk*> Chunks;
+	TArray<AChunk*> Chunks;
 };
