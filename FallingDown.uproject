@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.0",
+	"EngineAssociation": "5.1",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -11,17 +11,15 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"CoreUObject",
-				"UMG"
+				"UMG",
+				"GeometryCollectionEngine",
+				"FieldSystemEngine"
 			]
 		}
 	],
 	"Plugins": [
 		{
 			"Name": "UdpMessaging",
-			"Enabled": false
-		},
-		{
-			"Name": "ChaosEditor",
 			"Enabled": false
 		},
 		{
@@ -207,6 +205,18 @@
 		{
 			"Name": "KDevelopSourceCodeAccess",
 			"Enabled": false
+		},
+		{
+			"Name": "ChaosNiagara",
+			"Enabled": false
+		},
+		{
+			"Name": "ChaosCaching",
+			"Enabled": true
+		},
+		{
+			"Name": "FieldSystemPlugin",
+			"Enabled": true
 		}
 	]
 }

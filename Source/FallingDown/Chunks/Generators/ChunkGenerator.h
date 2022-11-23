@@ -24,10 +24,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
-	int32 InitialChunksCount = 100;
+	TSubclassOf<AChunk> InitialChunk;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
-	UDataTable* ChunksDataTable;
+	int32 InitialChunksCount = 30;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
 	float ChunkUpdatePeriod = 0.05f;
@@ -51,7 +51,7 @@ private:
 
 	void GenerateInitialChunks();
 
-	void SpawnChunk(TSubclassOf<AChunk> Chunk);
+	AChunk* SpawnChunk(TSubclassOf<AChunk> Chunk);
 
 	void UpdatePlayerPawnsList();
 
@@ -61,9 +61,7 @@ private:
 
 	FVector LastChunkPosition;
 
-	TArray<AChunk*> Chunks;
-
 	TArray<APawn*> PlayerPawns;
 
-	
+	TArray<AChunk*> Chunks;
 };

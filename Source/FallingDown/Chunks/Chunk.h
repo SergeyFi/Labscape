@@ -3,25 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/DataTable.h"
 #include "GameFramework/Actor.h"
 #include "Chunk.generated.h"
 
-USTRUCT()
-struct FChunkDataRow: public FTableRowBase
-{
-	GENERATED_BODY()
 
-public:
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AChunk> ChunkClass;
-
-	UPROPERTY(EditAnywhere)
-	int32 ChunkCount = 1;
-};
-
-UCLASS()
+UCLASS(Abstract)
 class FALLINGDOWN_API AChunk : public AActor
 {
 	GENERATED_BODY()
@@ -32,9 +18,15 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Chunk")
 	FVector GetChunkSize() const;
-
+	
+	UFUNCTION(BlueprintPure, Category = "Chunk")
+	const TArray<TSubclassOf<AChunk>>& GetNextChunks();
+	
 protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	FVector ChunkSize;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSubclassOf<AChunk>> NextChunksClasses;
 };

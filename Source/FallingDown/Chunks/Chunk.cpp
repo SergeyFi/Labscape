@@ -15,3 +15,8 @@ FVector AChunk::GetChunkSize() const
 {
 	return ChunkSize;
 }
+
+const TArray<TSubclassOf<AChunk>>& AChunk::GetNextChunks()
+{
+	return  NextChunksClasses;
+}

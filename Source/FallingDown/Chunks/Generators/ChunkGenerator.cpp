@@ -26,35 +26,35 @@ void AChunkGenerator::BeginPlay()
 	}
 }
 
-void AChunkGenerator::GenerateInitialChunks()
+// Called every frame
+void AChunkGenerator::Tick(float DeltaTime)
 {
-	int32 CurrentChunkCount = 0;
-	
-	for (const auto& RowName : ChunksDataTable->GetRowNames())
+	Super::Tick(DeltaTime);
+
+	if (HasAuthority())
 	{
-		FString ContextString;
-			
-		auto CurrentRow = ChunksDataTable->FindRow<FChunkDataRow>(RowName, ContextString);
-
-		for (auto i = 0; i < CurrentRow->ChunkCount; ++i)
-		{
-			SpawnChunk(CurrentRow->ChunkClass);
-			++CurrentChunkCount;
-
-			if (CurrentChunkCount >= InitialChunksCount)
-			{
-				break;
-			}
-		}
-
-		if (CurrentChunkCount >= InitialChunksCount)
-		{
-			break;
-		}
+		DynamicChunkGeneration();
 	}
 }
 
-void AChunkGenerator::SpawnChunk(TSubclassOf<AChunk> Chunk)
+void AChunkGenerator::GenerateInitialChunks()
+{
+	if (InitialChunk && InitialChunksCount > 0)
+	{
+		auto LastChunk = SpawnChunk(InitialChunk);
+
+		for (auto i = 0; i < InitialChunksCount - 1; ++i)
+		{
+			LastChunk = SpawnChunk(LastChunk->GetNextChunks()[FMath::RandRange(0, LastChunk->GetNextChunks().Num() - 1)]);
+		}
+	}
+	else
+	{
+		SetActorTickEnabled(false);
+	}
+}
+
+AChunk* AChunkGenerator::SpawnChunk(TSubclassOf<AChunk> Chunk)
 {;
 	auto NewChunk = GetWorld()->SpawnActor<AChunk>(Chunk, LastChunkPosition, UChunkFunctionLibrary::GetBlockRandomRotation());
 	NewChunk->SetActorScale3D({ChunkScale, ChunkScale, ChunkScale});
@@ -62,6 +62,8 @@ void AChunkGenerator::SpawnChunk(TSubclassOf<AChunk> Chunk)
 	LastChunkPosition = NewChunk->GetActorLocation() - NewChunk->GetChunkSize();
 
 	Chunks.Add(NewChunk);
+
+	return NewChunk;
 }
 
 void AChunkGenerator::UpdatePlayerPawnsList()
@@ -91,9 +93,9 @@ void AChunkGenerator::DynamicChunkGeneration()
 {
 	UpdatePlayerPawnsList();
 		
-	if (PlayerPawns.Num() != 0 && Chunks.Num() != 0)
+	if (PlayerPawns.Num() != 0 && Chunks.Num() >= 1)
 	{
-		if (PlayerPawns.Last()->GetActorLocation().Z + 1000.0f < Chunks[0]->GetActorLocation().Z)
+		if (PlayerPawns.Last()->GetActorLocation().Z + ChunkRemoveOffset < Chunks[0]->GetActorLocation().Z)
 		{
 			DestroyLastChunk();
 		}
@@ -105,16 +107,5 @@ void AChunkGenerator::DynamicChunkGeneration()
 				SpawnChunk(DefaultChunksClass);
 			}
 		}
-	}
-}
-
-// Called every frame
-void AChunkGenerator::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	if (HasAuthority())
-	{
-		DynamicChunkGeneration();
 	}
 }
