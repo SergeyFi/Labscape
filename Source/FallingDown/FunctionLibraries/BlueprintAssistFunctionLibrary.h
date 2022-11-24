@@ -26,4 +26,7 @@ class FALLINGDOWN_API UBlueprintAssistFunctionLibrary : public UBlueprintFunctio
 	
 	UFUNCTION(BlueprintPure, Category = "Blueprint assist", meta = (WorldContext = "WorldContextObject"))
 	static EBPNetMode GetNetMode(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "Blueprint assist", meta = (WorldContext = "WorldContextObject"))
+	static UUserWidget* GetParentUserWidget(UObject* WorldContextObject);
 };

@@ -3,6 +3,9 @@
 
 #include "FallingDown/FunctionLibraries/BlueprintAssistFunctionLibrary.h"
 
+#include "Blueprint/UserWidget.h"
+#include "Components/PanelWidget.h"
+
 EBPNetMode UBlueprintAssistFunctionLibrary::GetNetMode(UObject* WorldContextObject)
 {
 	auto Actor = Cast<AActor>(WorldContextObject);
@@ -31,4 +34,29 @@ EBPNetMode UBlueprintAssistFunctionLibrary::GetNetMode(UObject* WorldContextObje
 	}
 
 	return EBPNetMode::None;
+}
+
+UUserWidget* UBlueprintAssistFunctionLibrary::GetParentUserWidget(UObject* WorldContextObject)
+{
+	UUserWidget* UserWidget = nullptr;
+
+	auto Widget = Cast<UWidget>(WorldContextObject);
+	
+	if (Widget)
+	{
+		auto Parent = Widget->GetParent();
+	
+		if (Parent)
+		{
+			auto Outer = Parent->GetOuter();
+
+			while (Outer && UserWidget == nullptr)
+			{
+				UserWidget = Cast<UUserWidget>(Outer);
+				Outer = Outer->GetOuter();
+			}
+		}
+	}
+	
+	return UserWidget;
 }
