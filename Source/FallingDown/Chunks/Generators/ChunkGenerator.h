@@ -30,13 +30,13 @@ protected:
 	int32 InitialChunksCount = 30;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
-	float ChunkUpdatePeriod = 0.05f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
 	TSubclassOf<AChunk> DefaultChunksClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
 	int32 ChunksGenerationCount = 50;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
+	float ChunkUpdatePeriod = 0.05f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Chunks generator")
 	float ChunkGenerationOffset = 10000.0f;
@@ -59,9 +59,13 @@ private:
 
 	void DynamicChunkGeneration();
 
+	TSubclassOf<AChunk> GetRandomChunkClass(const TArray<TSubclassOf<AChunk>>& ChunksArray);
+
 	FVector LastChunkPosition;
 
 	TArray<APawn*> PlayerPawns;
 
 	TArray<AChunk*> Chunks;
+	
+	AChunk* LastSpawnedChunk;
 };

@@ -39,18 +39,14 @@ void AChunkGenerator::Tick(float DeltaTime)
 
 void AChunkGenerator::GenerateInitialChunks()
 {
-	if (InitialChunk && InitialChunksCount > 0)
+	if (InitialChunk)
 	{
 		auto LastChunk = SpawnChunk(InitialChunk);
 
-		for (auto i = 0; i < InitialChunksCount - 1; ++i)
+		for (auto i = 0; i < InitialChunksCount; ++i)
 		{
-			LastChunk = SpawnChunk(LastChunk->GetNextChunks()[FMath::RandRange(0, LastChunk->GetNextChunks().Num() - 1)]);
+			LastChunk = SpawnChunk(GetRandomChunkClass(LastChunk->GetNextChunks()));
 		}
-	}
-	else
-	{
-		SetActorTickEnabled(false);
 	}
 }
 
@@ -93,19 +89,34 @@ void AChunkGenerator::DynamicChunkGeneration()
 {
 	UpdatePlayerPawnsList();
 		
-	if (PlayerPawns.Num() != 0 && Chunks.Num() >= 1)
+	if (PlayerPawns.Num() != 0)
 	{
-		if (PlayerPawns.Last()->GetActorLocation().Z + ChunkRemoveOffset < Chunks[0]->GetActorLocation().Z)
+		if (Chunks.Num() != 0)
 		{
-			DestroyLastChunk();
+			if (PlayerPawns.Last()->GetActorLocation().Z + ChunkRemoveOffset < Chunks[0]->GetActorLocation().Z)
+			{
+				DestroyLastChunk();
+			}
 		}
 			
 		if (PlayerPawns[0]->GetActorLocation().Z + -ChunkGenerationOffset < Chunks.Last()->GetActorLocation().Z)
 		{
 			for (auto i = 0; i < ChunksGenerationCount; ++i)
 			{
-				SpawnChunk(DefaultChunksClass);
+				if (LastSpawnedChunk == nullptr)
+				{
+					LastSpawnedChunk = SpawnChunk(DefaultChunksClass);
+				}
+				else
+				{
+					SpawnChunk(GetRandomChunkClass(LastSpawnedChunk->GetNextChunks()));
+				}
 			}
 		}
 	}
+}
+
+TSubclassOf<AChunk> AChunkGenerator::GetRandomChunkClass(const TArray<TSubclassOf<AChunk>>& ChunksArray)
+{
+	return ChunksArray[FMath::RandRange(0, ChunksArray.Num() - 1)];
 }
