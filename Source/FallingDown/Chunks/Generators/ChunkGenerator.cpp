@@ -51,8 +51,11 @@ void AChunkGenerator::GenerateInitialChunks()
 }
 
 AChunk* AChunkGenerator::SpawnChunk(TSubclassOf<AChunk> Chunk)
-{;
-	auto NewChunk = GetWorld()->SpawnActor<AChunk>(Chunk, LastChunkPosition, UChunkFunctionLibrary::GetBlockRandomRotation());
+{
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	
+	auto NewChunk = GetWorld()->SpawnActor<AChunk>(Chunk, LastChunkPosition, UChunkFunctionLibrary::GetBlockRandomRotation(), SpawnParameters);
 	NewChunk->SetActorScale3D({ChunkScale, ChunkScale, ChunkScale});
 
 	LastChunkPosition = NewChunk->GetActorLocation() - NewChunk->GetChunkSize();
@@ -109,7 +112,7 @@ void AChunkGenerator::DynamicChunkGeneration()
 				}
 				else
 				{
-					SpawnChunk(GetRandomChunkClass(LastSpawnedChunk->GetNextChunks()));
+					LastSpawnedChunk = SpawnChunk(GetRandomChunkClass(LastSpawnedChunk->GetNextChunks()));
 				}
 			}
 		}
