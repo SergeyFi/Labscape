@@ -37,6 +37,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Instanced, Category = "Health")
 	TArray<UHealthSubcomponent*> Subcomponents;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	bool bGodMode;
+
 private:
 
 	UFUNCTION(Client, Reliable)

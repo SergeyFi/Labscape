@@ -15,16 +15,19 @@ void UHealthComponent::AddDamage(int32 Damage)
 {
 	if (GetOwnerRole() == ROLE_Authority)
 	{
-		Health -= Damage;
-
-		if (Health < 0)
+		if (!bGodMode)
 		{
-			Health = 0;
+			Health -= Damage;
+
+			if (Health < 0)
+			{
+				Health = 0;
+			}
+
+			OnHealthCountChanged.Broadcast(Health);
+
+			UpdateHealthOnClient(Health);
 		}
-
-		OnHealthCountChanged.Broadcast(Health);
-
-		UpdateHealthOnClient(Health);
 	}
 }
 
