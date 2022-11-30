@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "FallingDown/Components/ScoreComponent.h"
 #include "BlueprintAssistFunctionLibrary.generated.h"
 
 UENUM(BlueprintType)
@@ -28,5 +29,11 @@ class FALLINGDOWN_API UBlueprintAssistFunctionLibrary : public UBlueprintFunctio
 	static EBPNetMode GetNetMode(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure, Category = "Blueprint assist", meta = (WorldContext = "WorldContextObject"))
+	static bool IsLocalPlayer(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "Blueprint assist", meta = (WorldContext = "WorldContextObject"))
 	static UUserWidget* GetParentUserWidget(UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintPure, Category = "Blueprint assist")
+	static UScoreComponent* GetScoreComponent(AActor* Target);
 };
