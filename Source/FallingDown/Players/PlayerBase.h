@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "FallingDown/Components/ScoreComponent.h"
+#include "FallingDown/Components/Health/HealthComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "PlayerBase.generated.h"
 
 UCLASS()
@@ -31,10 +33,19 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UScoreComponent* ScoreComponent;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	UHealthComponent* HealthComponent;
+
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerBase")
 	float PlayerMovementScoreScale = 0.001f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "PlayerBase|Sounds")
+	USoundBase* SoundDamage;
 
 private:
 
 	void AddScoreForMovement(float DeltaTime);
+
+	UFUNCTION()
+	void OnHealthCountChanged(int32 Count);
 };

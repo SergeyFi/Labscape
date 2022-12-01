@@ -8,12 +8,16 @@ APlayerBase::APlayerBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>("Health");
 }
 
 // Called when the game starts or when spawned
 void APlayerBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	HealthComponent->OnHealthCountChanged.AddDynamic(this, &APlayerBase::OnHealthCountChanged);
 }
 
 void APlayerBase::PossessedBy(AController* NewController)
@@ -36,6 +40,14 @@ void APlayerBase::AddScoreForMovement(float DeltaTime)
 		{
 			ScoreComponent->AddScore(FMath::Abs(PlayerZVelocity) * DeltaTime * PlayerMovementScoreScale);
 		}
+	}
+}
+
+void APlayerBase::OnHealthCountChanged(int32 Count)
+{
+	if (SoundDamage)
+	{
+		UGameplayStatics::PlaySound2D(this, SoundDamage);
 	}
 }
 
