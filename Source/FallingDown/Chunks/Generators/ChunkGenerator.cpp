@@ -73,7 +73,12 @@ void AChunkGenerator::UpdatePlayerPawnsList()
 	
 	for (auto& State : PlayerStates)
 	{
-		PlayerPawns.Add(State->GetPawn());
+		auto Pawn = State->GetPawn();
+
+		if (Pawn)
+		{
+			PlayerPawns.Add(Pawn);
+		}
 	}
 
 	PlayerPawns.Sort([](const APawn& A, const APawn& B)
