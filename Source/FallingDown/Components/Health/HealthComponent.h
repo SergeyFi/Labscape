@@ -23,6 +23,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Health")
 	int32 GetHealth() const;
+
+	UFUNCTION(BlueprintPure, Category = "Health")
+	bool HealthIsOver();
 	
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FHealthEvent OnHealthCountChanged;

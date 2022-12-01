@@ -36,6 +36,11 @@ int32 UHealthComponent::GetHealth() const
 	return Health;
 }
 
+bool UHealthComponent::HealthIsOver()
+{
+	return Health == 0;
+}
+
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
