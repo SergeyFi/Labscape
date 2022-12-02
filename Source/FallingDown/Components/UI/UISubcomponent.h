@@ -7,6 +7,8 @@
 #include "FallingDown/Components/Subcomponents/Subcomponent.h"
 #include "UISubcomponent.generated.h"
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FVisibilityDelegate, bool, Visibility);
 /**
  * 
  */
@@ -14,4 +16,13 @@ UCLASS(Abstract, HideDropdown, EditInlineNew, Blueprintable)
 class FALLINGDOWN_API UUISubcomponent : public USubcomponent
 {
 	GENERATED_BODY()
+
+public:
+
+	void SetVisibility(bool bVisibility);
+
+protected:
+
+	UPROPERTY(BlueprintAssignable)
+	FVisibilityDelegate OnVisibilityChanhed;
 };

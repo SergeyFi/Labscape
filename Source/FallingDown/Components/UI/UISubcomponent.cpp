@@ -2,3 +2,8 @@
 
 
 #include "FallingDown/Components/UI/UISubcomponent.h"
+
+void UUISubcomponent::SetVisibility(bool bVisibility)
+{
+	OnVisibilityChanhed.Broadcast(bVisibility);
+}

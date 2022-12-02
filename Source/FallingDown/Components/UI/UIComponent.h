@@ -16,7 +16,9 @@ class FALLINGDOWN_API UUIComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UUIComponent();
-	
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void SetVisibility(bool bVisibility);
 
 protected:
 	// Called when the game starts

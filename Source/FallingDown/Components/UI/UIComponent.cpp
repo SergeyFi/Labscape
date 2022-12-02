@@ -9,6 +9,14 @@ UUIComponent::UUIComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+void UUIComponent::SetVisibility(bool bVisibility)
+{
+	for (auto& SubComponent : Subcomponents)
+	{
+		SubComponent->SetVisibility(bVisibility);
+	}
+}
+
 
 void UUIComponent::InitSubmodules()
 {
