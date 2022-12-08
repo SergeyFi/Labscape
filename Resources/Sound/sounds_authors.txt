@@ -1,4 +1,10 @@
-sound_whoosh_01.wav - https://freesound.org/people/myfox14/sounds/405456/
-sound_wind_01.wav - https://freesound.org/people/kyles/sounds/454360/
-sound_pickup.wav - https://freesound.org/people/BeezleFM/sounds/512138/
-sound_damage.wav - https://freesound.org/people/TheDweebMan/sounds/277213/
+sound_whoosh_01 - https://freesound.org/people/myfox14/sounds/405456/
+sound_wind_01 - https://freesound.org/people/kyles/sounds/454360/
+sound_pickup - https://freesound.org/people/BeezleFM/sounds/512138/
+sound_damage - https://freesound.org/people/TheDweebMan/sounds/277213/
+music_01 - https://freesound.org/people/frankum/sounds/384468/
+music_02 - https://freesound.org/people/frankum/sounds/387410/
+music_03 - https://freesound.org/people/FoolBoyMedia/sounds/231257/
+music_04 - https://freesound.org/people/edtijo/sounds/210737/
+music_05 - https://freesound.org/people/frankum/sounds/377541/
+music_06 - https://freesound.org/people/frankum/sounds/353249/
