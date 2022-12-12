@@ -59,8 +59,6 @@ private:
 
 	void DynamicChunkGeneration();
 
-	TSubclassOf<AChunk> GetRandomChunkClass(const TArray<TSubclassOf<AChunk>>& ChunksArray);
-
 	FVector LastChunkPosition;
 
 	TArray<APawn*> PlayerPawns;

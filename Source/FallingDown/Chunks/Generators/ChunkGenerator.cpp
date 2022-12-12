@@ -45,7 +45,7 @@ void AChunkGenerator::GenerateInitialChunks()
 
 		for (auto i = 0; i < InitialChunksCount; ++i)
 		{
-			LastChunk = SpawnChunk(GetRandomChunkClass(LastChunk->GetNextChunks()));
+			LastChunk = SpawnChunk(LastChunk->GetNextChunk());
 		}
 	}
 }
@@ -128,13 +128,8 @@ void AChunkGenerator::DynamicChunkGeneration()
 			}
 			else
 			{
-				LastSpawnedChunk = SpawnChunk(GetRandomChunkClass(LastSpawnedChunk->GetNextChunks()));
+				LastSpawnedChunk = SpawnChunk(LastSpawnedChunk->GetNextChunk());
 			}
 		}
 	}
-}
-
-TSubclassOf<AChunk> AChunkGenerator::GetRandomChunkClass(const TArray<TSubclassOf<AChunk>>& ChunksArray)
-{
-	return ChunksArray[FMath::RandRange(0, ChunksArray.Num() - 1)];
 }

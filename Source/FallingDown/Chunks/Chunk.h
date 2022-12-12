@@ -4,8 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/DataTable.h"
 #include "Chunk.generated.h"
 
+
+USTRUCT(BlueprintType)
+struct FNextChunkData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class AChunk> ChunkClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 ChanceOfSpawn = 1;
+};
 
 UCLASS(Abstract)
 class FALLINGDOWN_API AChunk : public AActor
@@ -20,7 +33,7 @@ public:
 	FVector GetChunkSize() const;
 	
 	UFUNCTION(BlueprintPure, Category = "Chunk")
-	const TArray<TSubclassOf<AChunk>>& GetNextChunks();
+	TSubclassOf<AChunk> GetNextChunk() const;
 	
 protected:
 
@@ -28,5 +41,5 @@ protected:
 	FVector ChunkSize;
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<TSubclassOf<AChunk>> NextChunksClasses;
+	UDataTable* ChunksData;
 };
