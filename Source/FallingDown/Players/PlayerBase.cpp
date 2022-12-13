@@ -89,7 +89,7 @@ void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	if (GetNetMode() == NM_Client || GetNetMode() == NM_Standalone)
 	{
-		PlayerInputComponent->BindAxis("MoveLeftRight", this, &APlayerBase::OnMoveLeftRight);
-		PlayerInputComponent->BindAxis("MoveForwardBackward", this, &APlayerBase::OnMoveForwardBackward);
+		//PlayerInputComponent->BindAxis("MoveLeftRight", this, &APlayerBase::OnMoveLeftRight);
+		//PlayerInputComponent->BindAxis("MoveForwardBackward", this, &APlayerBase::OnMoveForwardBackward);
 	}
 }
