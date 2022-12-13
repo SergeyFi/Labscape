@@ -22,13 +22,31 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input", Server, Unreliable)
 	void AddMovementInput(FVector Input);
 
+	UFUNCTION(BlueprintPure, Category = "Input")
+	float GetFallingSpeed();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	float MaxFallingSpeed;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	float FallingVelocity;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	float MovementSpeed = 900.0f;
+
 	FVector InputLast;
 
 	UPrimitiveComponent* RootComponent;
+
+private:
+	
+	void Falling();
+
+	void Movement();
 };
 
 
