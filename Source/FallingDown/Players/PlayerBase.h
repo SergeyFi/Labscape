@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "GameFramework/Pawn.h"
 #include "FallingDown/Components/ScoreComponent.h"
 #include "FallingDown/Components/Health/HealthComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlayerBase.generated.h"
 
 UCLASS()
-class FALLINGDOWN_API APlayerBase : public ACharacter
+class FALLINGDOWN_API APlayerBase : public APawn
 {
 	GENERATED_BODY()
 
@@ -48,4 +48,16 @@ private:
 
 	UFUNCTION()
 	void OnHealthCountChanged(int32 Count);
+
+	UFUNCTION()
+	void OnMoveLeftRight(float Value);
+
+	UFUNCTION(Server, Unreliable)
+	void MoveLeftRightServer(float Value);
+
+	UFUNCTION()
+	void OnMoveForwardBackward(float Value);
+
+	UFUNCTION(Server, Unreliable)
+	void MoveForwardBackwardServer(float Value);
 };

@@ -3,6 +3,7 @@
 
 #include "FallingDown/Players/PlayerBase.h"
 
+
 // Sets default values
 APlayerBase::APlayerBase()
 {
@@ -51,6 +52,28 @@ void APlayerBase::OnHealthCountChanged(int32 Count)
 	}
 }
 
+void APlayerBase::OnMoveLeftRight(float Value)
+{
+	MoveLeftRightServer(Value);
+}
+
+void APlayerBase::MoveLeftRightServer_Implementation(float Value)
+{
+	Value = FMath::Clamp(Value, -1.0f, 1.0f);
+	Cast<UStaticMeshComponent>(GetRootComponent())->AddForce(GetActorRightVector() * 900000.0 * Value);
+}
+
+void APlayerBase::OnMoveForwardBackward(float Value)
+{
+	MoveForwardBackwardServer(Value);
+}
+
+void APlayerBase::MoveForwardBackwardServer_Implementation(float Value)
+{
+	Value = FMath::Clamp(Value, -1.0f, 1.0f);
+	Cast<UStaticMeshComponent>(GetRootComponent())->AddForce(GetActorForwardVector() * 900000.0 * Value);
+}
+
 // Called every frame
 void APlayerBase::Tick(float DeltaTime)
 {
@@ -63,5 +86,10 @@ void APlayerBase::Tick(float DeltaTime)
 void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
 
+	if (GetNetMode() == NM_Client || GetNetMode() == NM_Standalone)
+	{
+		PlayerInputComponent->BindAxis("MoveLeftRight", this, &APlayerBase::OnMoveLeftRight);
+		PlayerInputComponent->BindAxis("MoveForwardBackward", this, &APlayerBase::OnMoveForwardBackward);
+	}
+}
