@@ -39,15 +39,29 @@ void UFallingMovementComponent::Movement()
 	InputLast = {0.0f, 0.0f, 0.0f};
 }
 
+void UFallingMovementComponent::Damping()
+{
+	FVector CurrentVelocityNorm = GetOwner()->GetVelocity();
+	CurrentVelocityNorm.Normalize();
+	
+	FVector DampVelocity;
+	DampVelocity.X = -CurrentVelocityNorm.X;
+	DampVelocity.Y =  -CurrentVelocityNorm.Y;
+	
+	RootComponent->AddForce(DampVelocity * 1000.0f * MovementDamping);
+}
+
 
 // Called every frame
 void UFallingMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	
 	Movement();
 
 	Falling();
+
+	Damping();
 }
 
 void UFallingMovementComponent::AddMovementInput_Implementation(FVector Input)

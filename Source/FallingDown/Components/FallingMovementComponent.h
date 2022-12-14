@@ -38,6 +38,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	float MovementSpeed = 900.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	float MovementDamping = 300.0f;
+
 	FVector InputLast;
 
 	UPrimitiveComponent* RootComponent;
@@ -47,6 +50,8 @@ private:
 	void Falling();
 
 	void Movement();
+
+	void Damping();
 };
 
 
