@@ -52,6 +52,8 @@ private:
 	void Movement();
 
 	void Damping();
+
+	void SpeedLimit();
 };
 
 

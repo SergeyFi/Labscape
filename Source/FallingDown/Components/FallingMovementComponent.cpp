@@ -51,6 +51,16 @@ void UFallingMovementComponent::Damping()
 	RootComponent->AddForce(DampVelocity * 1000.0f * MovementDamping);
 }
 
+void UFallingMovementComponent::SpeedLimit()
+{
+	if (GetFallingSpeed() > MaxFallingSpeed)
+	{
+		auto CurrentVelocity = GetOwner()->GetVelocity();
+		CurrentVelocity.Z = -MaxFallingSpeed;
+		RootComponent->SetPhysicsLinearVelocity(CurrentVelocity);
+	}
+}
+
 
 // Called every frame
 void UFallingMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -62,6 +72,8 @@ void UFallingMovementComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 	Falling();
 
 	Damping();
+
+	SpeedLimit();
 }
 
 void UFallingMovementComponent::AddMovementInput_Implementation(FVector Input)
