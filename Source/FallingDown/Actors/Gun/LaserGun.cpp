@@ -14,7 +14,7 @@ ALaserGun::ALaserGun()
 	RootComponent = FieldComponent = CreateDefaultSubobject<UFieldSystemComponent>("Field");
 
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>("Arrow");
-	ArrowComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	ArrowComponent->SetupAttachment(RootComponent);
 	
 	RadialFalloff = CreateDefaultSubobject<URadialFalloff>("RadialFalloff");
 	RadialVector = CreateDefaultSubobject<URadialVector>("RadialVector");
