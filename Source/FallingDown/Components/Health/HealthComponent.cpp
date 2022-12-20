@@ -41,6 +41,14 @@ bool UHealthComponent::HealthIsOver()
 	return Health == 0;
 }
 
+void UHealthComponent::Kill()
+{
+	if (!bGodMode)
+	{
+		AddDamage(Health);
+	}
+}
+
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();

@@ -26,6 +26,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Health")
 	bool HealthIsOver();
+
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void Kill();
 	
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FHealthEvent OnHealthCountChanged;
