@@ -10,3 +10,4 @@ music_06 - https://freesound.org/people/frankum/sounds/353249/
 sound_whoosh_02 - https://freesound.org/people/DrMinky/sounds/174435/
 sound_whoosh_03 - https://freesound.org/people/Halleck/sounds/121651/
 sound_whoosh_04 - https://freesound.org/people/_bepis/sounds/414422/
+sound_pickup2 - https://freesound.org/people/Kenneth_Cooney/sounds/609335/
