@@ -3,7 +3,7 @@
 
 #include "FallingDown/Chunks/ChunkFunctionLibrary.h"
 
-FRotator UChunkFunctionLibrary::GetBlockRandomRotation()
+FRotator UChunkFunctionLibrary::Get90degreesRandomRotation()
 {
 	const TArray<float> RotationsZ {0.0f, 90.0f, 180.0f, 270.0f};
 

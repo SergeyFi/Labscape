@@ -17,5 +17,5 @@ class FALLINGDOWN_API UChunkFunctionLibrary : public UBlueprintFunctionLibrary
 public:
 
 	UFUNCTION(BlueprintPure, Category = "Chunk")
-	static FRotator GetBlockRandomRotation();
+	static FRotator Get90degreesRandomRotation();
 };
