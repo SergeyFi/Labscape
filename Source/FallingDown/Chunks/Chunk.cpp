@@ -61,6 +61,11 @@ TSubclassOf<AChunk> AChunk::GetNextChunk() const
 
 		for (auto& NextChunkData : ChunksDatas)
 		{
+			if (NextChunkData->ChunkClass == GetClass())
+			{
+				continue;
+			}
+			
 			if (NextChunkData->ChanceOfSpawn / ChancesSum  >= Probability)
 			{
 				return NextChunkData->ChunkClass;
