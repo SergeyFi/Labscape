@@ -7,8 +7,15 @@
 AChunk::AChunk()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = bRotating;
 	bReplicates = true;
+}
+
+void AChunk::TickActor(float DeltaTime, ELevelTick TickType, FActorTickFunction& ThisTickFunction)
+{
+	Super::TickActor(DeltaTime, TickType, ThisTickFunction);
+
+	AddActorLocalRotation(RotationRate * DeltaTime);
 }
 
 FVector AChunk::GetChunkSize() const
@@ -25,11 +32,7 @@ TSubclassOf<AChunk> AChunk::GetNextChunk() const
 	
 		ChunksData->GetAllRows<FNextChunkData>(Message, ChunksDatas);
 
-		auto Probability = FMath::RandRange(0.0f, 1.0f);
-		TArray<TPair<float, TSubclassOf<AChunk>>> ChunkSpawnPobability;
-		ChunkSpawnPobability.Reserve(ChunksDatas.Num());
-		int32 ChancesSum = 0;
-
+		
 		int32 LastIndex = ChunksDatas.Num() - 1;
 		for (int32 i = 0; i <= LastIndex; ++i)
 		{
@@ -39,31 +42,49 @@ TSubclassOf<AChunk> AChunk::GetNextChunk() const
 				ChunksDatas.Swap(i, Index);
 			}
 		}
-	
-		for (auto& Data : ChunksDatas)
+		
+
+		auto ChancesSum = 0.0f;
+		auto MaxChance = 0.0f;
+		for (auto& NextChunkData : ChunksDatas)
 		{
-			if (Data->ChunkClass != GetClass())
+			ChancesSum += NextChunkData->ChanceOfSpawn;
+
+			if (NextChunkData->ChanceOfSpawn > MaxChance)
 			{
-				ChancesSum += Data->ChanceOfSpawn;
+				MaxChance = NextChunkData->ChanceOfSpawn;
+			}
+		}
+		
+
+		auto Probability = FMath::RandRange(0.0f, MaxChance / ChancesSum);
+
+		for (auto& NextChunkData : ChunksDatas)
+		{
+			if (NextChunkData->ChanceOfSpawn / ChancesSum  >= Probability)
+			{
+				return NextChunkData->ChunkClass;
 			}
 		}
 
-		for (auto& Data : ChunksDatas)
-		{
-			if (Data->ChunkClass != GetClass())
-			{
-				ChunkSpawnPobability.Add({Data->ChanceOfSpawn / ChancesSum, Data->ChunkClass});
-			}
-		}
-
-		for (auto& ChunkProbability : ChunkSpawnPobability)
-		{
-			if (ChunkProbability.Key <= Probability)
-			{
-				return ChunkProbability.Value;
-			}
-		}
+		return ChunksDatas[0]->ChunkClass;
 	}
 
 	return nullptr;
+}
+
+void AChunk::BeginPlay()
+{
+	Super::BeginPlay();
+
+	bool RandBool = FMath::RandBool();
+
+	if (RandBool)
+	{
+		RotationRate = {0.0f, FMath::RandRange(5.0f, 10.0f), 0.0f};
+	}
+	else
+	{
+		RotationRate = {0.0f, FMath::RandRange(-5.0f, -10.0f), 0.0f};
+	}
 }
