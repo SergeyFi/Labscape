@@ -29,8 +29,6 @@ public:
 	// Sets default values for this actor's properties
 	AChunk();
 
-	virtual void TickActor(float DeltaTime, ELevelTick TickType, FActorTickFunction& ThisTickFunction) override;
-
 	UFUNCTION(BlueprintPure, Category = "Chunk")
 	FVector GetChunkSize() const;
 	
@@ -38,18 +36,10 @@ public:
 	TSubclassOf<AChunk> GetNextChunk() const;
 	
 protected:
-	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly)
 	FVector ChunkSize;
 
 	UPROPERTY(EditDefaultsOnly)
 	UDataTable* ChunksData;
-
-	UPROPERTY(EditDefaultsOnly)
-	bool bRotating = true;
-
-private:
-
-	FRotator RotationRate;
 };

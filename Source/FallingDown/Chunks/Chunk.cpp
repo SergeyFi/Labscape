@@ -7,15 +7,8 @@
 AChunk::AChunk()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = bRotating;
+	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
-}
-
-void AChunk::TickActor(float DeltaTime, ELevelTick TickType, FActorTickFunction& ThisTickFunction)
-{
-	Super::TickActor(DeltaTime, TickType, ThisTickFunction);
-
-	AddActorLocalRotation(RotationRate * DeltaTime);
 }
 
 FVector AChunk::GetChunkSize() const
@@ -76,20 +69,4 @@ TSubclassOf<AChunk> AChunk::GetNextChunk() const
 	}
 
 	return nullptr;
-}
-
-void AChunk::BeginPlay()
-{
-	Super::BeginPlay();
-
-	bool RandBool = FMath::RandBool();
-
-	if (RandBool)
-	{
-		RotationRate = {0.0f, FMath::RandRange(5.0f, 10.0f), 0.0f};
-	}
-	else
-	{
-		RotationRate = {0.0f, FMath::RandRange(-5.0f, -10.0f), 0.0f};
-	}
 }
