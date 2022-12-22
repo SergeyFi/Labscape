@@ -17,7 +17,8 @@ void UDifficultComponent::BeginPlay()
 
 	if (GetWorld())
 	{
-		if (StartTime <= GetWorld()->GetTimeSeconds())
+		auto WorldTime = GetWorld()->GetTimeSeconds();
+		if (WorldTime >= StartTime && WorldTime <= EndTime)
 		{
 			ApplyDifficult();
 		}

@@ -23,6 +23,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Difficult")
 	float StartTime;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Difficult")
+	float EndTime;
+
 	virtual void ApplyDifficult();
 		
 };
