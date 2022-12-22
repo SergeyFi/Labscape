@@ -21,6 +21,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Difficult")
+	bool Enabled = true;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Difficult")
 	float StartTime;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Difficult")

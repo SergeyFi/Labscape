@@ -15,7 +15,7 @@ void UDifficultComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GetWorld())
+	if (GetWorld() && Enabled)
 	{
 		auto WorldTime = GetWorld()->GetTimeSeconds();
 		if (EndTime == 0.0f || WorldTime <= EndTime)
