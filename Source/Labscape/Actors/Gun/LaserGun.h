@@ -8,7 +8,7 @@
 #include "Components/ArrowComponent.h"
 #include "LaserGun.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGunFire);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGunFire, AActor*, Target);
 
 UCLASS()
 class LABSCAPE_API ALaserGun : public AActor

@@ -24,8 +24,6 @@ void ALaserGun::Fire()
 {
 	if (!bNeedCooldown && Destruction())
 	{
-		OnHit.Broadcast();
-		
 		if (GetNetMode() == NM_Client ||  GetNetMode() == NM_Standalone)
 		{
 			Effects();
@@ -57,6 +55,8 @@ bool ALaserGun::Destruction()
 			if(GEngine)
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, TEXT("Laser is colliding"));
 		}
+
+		OnHit.Broadcast(HitResult.GetActor());
 		
 		FieldComponent->ApplyPhysicsField(true, EFieldPhysicsType::Field_ExternalClusterStrain, nullptr,
 			RadialFalloff->SetRadialFalloff(StrainMagnitude, 0.0f, 1.0f, 0.0f, StrainRadius, HitResult.ImpactPoint, EFieldFalloffType::Field_Falloff_Linear));
