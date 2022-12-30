@@ -25,6 +25,12 @@ void UFallingMovementComponent::BeginPlay()
 	RootComponent = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 }
 
+void UFallingMovementComponent::SendMovementInputToServer_Implementation(FVector Input)
+{
+	Input.Normalize();
+	InputLast += Input;
+}
+
 void UFallingMovementComponent::Falling()
 {
 	if (FMath::Abs(GetOwner()->GetVelocity().Z) <= MaxFallingSpeed)
@@ -76,8 +82,19 @@ void UFallingMovementComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 	SpeedLimit();
 }
 
-void UFallingMovementComponent::AddMovementInput_Implementation(FVector Input)
+void UFallingMovementComponent::AddMovementInput(FVector Input)
 {
-	Input.Normalize();
-	InputLast += Input;
+	if (GetNetMode() == NM_Standalone)
+	{
+		Input.Normalize();
+		InputLast += Input;
+		return;
+	}
+	
+	if (GetNetMode() == NM_Client)
+	{
+		SendMovementInputToServer(Input);
+		Input.Normalize();
+		InputLast += Input;
+	}
 }

@@ -19,7 +19,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UFUNCTION(BlueprintCallable, Category = "Input", Server, Unreliable)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void AddMovementInput(FVector Input);
 
 	UFUNCTION(BlueprintPure, Category = "Input")
@@ -44,6 +44,9 @@ protected:
 	FVector InputLast;
 
 	UPrimitiveComponent* RootComponent;
+
+	UFUNCTION(BlueprintCallable, Server, Unreliable)
+	void SendMovementInputToServer(FVector Input);
 
 private:
 	
