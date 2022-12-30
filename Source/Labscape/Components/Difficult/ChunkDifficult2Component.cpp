@@ -21,14 +21,28 @@ void UChunkDifficult2Component::ApplyDifficult()
 {
 	Super::ApplyDifficult();
 
-	auto Sign = -1;
-
-	if (FMath::RandBool())
+	if (GetOwnerRole() == ROLE_Authority)
 	{
-		Sign = 1;
-	}
+		auto Sign = -1;
+
+		if (FMath::RandBool())
+		{
+			Sign = 1;
+		}
 	
-	RotationSpeed = FMath::RandRange(MinRotationSpeed, MaxRotationSpeed) * Sign;
+		RotationSpeed = FMath::RandRange(MinRotationSpeed, MaxRotationSpeed) * Sign;
+
+		SetRotationSpeedClient(RotationSpeed);
+
+		SetComponentTickEnabled(true);
+	}
+
+	
+}
+
+void UChunkDifficult2Component::SetRotationSpeedClient_Implementation(float Speed)
+{
+	RotationSpeed = Speed;
 
 	SetComponentTickEnabled(true);
 }

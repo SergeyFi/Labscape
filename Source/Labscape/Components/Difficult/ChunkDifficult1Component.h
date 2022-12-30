@@ -32,7 +32,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	float MaxRotation = 180.0f;
-	
+
+	UFUNCTION(Client, Reliable)
+	void SetMaxZRotationOnClient(float Rotation);
 
 private:
 

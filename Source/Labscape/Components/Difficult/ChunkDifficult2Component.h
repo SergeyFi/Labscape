@@ -30,6 +30,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float MinRotationSpeed = 100.0f;
 
+	UFUNCTION(Client, Reliable)
+	void SetRotationSpeedClient(float Speed);
+
 private:
 
 	float RotationSpeed;

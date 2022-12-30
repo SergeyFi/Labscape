@@ -29,7 +29,16 @@ void UChunkDifficult1Component::ApplyDifficult()
 {
 	Super::ApplyDifficult();
 
-	MaxZRotation = FMath::RandRange(MinRotation, MaxRotation);
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		MaxZRotation = FMath::RandRange(MinRotation, MaxRotation);
 
+		SetComponentTickEnabled(true);
+	}
+}
+
+void UChunkDifficult1Component::SetMaxZRotationOnClient_Implementation(float Rotation)
+{
+	MaxZRotation = Rotation;
 	SetComponentTickEnabled(true);
 }
