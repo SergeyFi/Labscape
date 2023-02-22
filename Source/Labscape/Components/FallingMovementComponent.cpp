@@ -24,7 +24,7 @@ void UFallingMovementComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 
 	SpeedLimit();
 
-	InputSum= {0.0f, 0.0f, 0.0f};
+	InputSum = FVector::Zero();
 }
 
 void UFallingMovementComponent::AddMovementInput(FVector Input, float Scale)
@@ -57,9 +57,9 @@ void UFallingMovementComponent::SendMovementInputToServer_Implementation(FVector
 
 void UFallingMovementComponent::Falling()
 {
-	if (FMath::Abs(GetOwner()->GetVelocity().Z) <= MaxFallingSpeed)
+	if (FMath::Abs(GetOwner()->GetVelocity().Z) < MaxFallingSpeed)
 	{
-		RootComponent->AddForce(GetOwner()->GetActorUpVector() * 1000.0 * -FallingVelocity);
+		RootComponent->AddForce(GetOwner()->GetActorUpVector() * VelocityCoefficient * -FallingVelocity);
 	}
 }
 
@@ -68,7 +68,7 @@ void UFallingMovementComponent::Movement()
 	auto Direction = InputSum;
 	Direction.Z = 0.0f;
 	
-	RootComponent->AddForce(Direction * 1000.0 * MovementSpeed);
+	RootComponent->AddForce(Direction * VelocityCoefficient * MovementSpeed);
 }
 
 void UFallingMovementComponent::Damping()
@@ -80,7 +80,7 @@ void UFallingMovementComponent::Damping()
 	DampVelocity.X = -CurrentVelocityNorm.X;
 	DampVelocity.Y =  -CurrentVelocityNorm.Y;
 	
-	RootComponent->AddForce(DampVelocity * 1000.0f * MovementDamping);
+	RootComponent->AddForce(DampVelocity * VelocityCoefficient * MovementDamping);
 }
 
 void UFallingMovementComponent::SpeedLimit()

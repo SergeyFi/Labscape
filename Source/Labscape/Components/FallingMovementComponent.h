@@ -49,6 +49,8 @@ protected:
 	void SendMovementInputToServer(FVector Input, float Scale);
 
 private:
+
+	float VelocityCoefficient = 1000.0f;
 	
 	void Falling();
 
