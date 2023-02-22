@@ -20,7 +20,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
-	void AddMovementInput(FVector Input);
+	void AddMovementInput(FVector Input, float Scale);
 
 	UFUNCTION(BlueprintPure, Category = "Input")
 	float GetFallingSpeed();
@@ -41,12 +41,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	float MovementDamping = 300.0f;
 
-	FVector InputLast;
+	FVector InputSum;
 
 	UPrimitiveComponent* RootComponent;
 
 	UFUNCTION(BlueprintCallable, Server, Unreliable)
-	void SendMovementInputToServer(FVector Input);
+	void SendMovementInputToServer(FVector Input, float Scale);
 
 private:
 	
@@ -57,6 +57,8 @@ private:
 	void Damping();
 
 	void SpeedLimit();
+
+	FVector ScaleInput(FVector Input, float Scale);
 };
 
 

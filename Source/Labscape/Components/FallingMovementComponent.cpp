@@ -8,9 +8,34 @@
 UFallingMovementComponent::UFallingMovementComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-
 }
 
+
+// Called every frame
+void UFallingMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+	Movement();
+
+	Falling();
+
+	Damping();
+
+	SpeedLimit();
+
+	InputSum= {0.0f, 0.0f, 0.0f};
+}
+
+void UFallingMovementComponent::AddMovementInput(FVector Input, float Scale)
+{
+	if (GetNetMode() == NM_Client)
+	{
+		SendMovementInputToServer(Input, Scale);
+	}
+
+	InputSum += Input * Scale;
+}
 
 float UFallingMovementComponent::GetFallingSpeed()
 {
@@ -25,10 +50,9 @@ void UFallingMovementComponent::BeginPlay()
 	RootComponent = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 }
 
-void UFallingMovementComponent::SendMovementInputToServer_Implementation(FVector Input)
-{
-	Input.Normalize();
-	InputLast += Input;
+void UFallingMovementComponent::SendMovementInputToServer_Implementation(FVector Input, float Scale)
+{	
+	InputSum += Input;
 }
 
 void UFallingMovementComponent::Falling()
@@ -41,8 +65,10 @@ void UFallingMovementComponent::Falling()
 
 void UFallingMovementComponent::Movement()
 {
-	RootComponent->AddForce(InputLast * 1000.0 * MovementSpeed);
-	InputLast = {0.0f, 0.0f, 0.0f};
+	auto Direction = InputSum;
+	Direction.Z = 0.0f;
+	
+	RootComponent->AddForce(Direction * 1000.0 * MovementSpeed);
 }
 
 void UFallingMovementComponent::Damping()
@@ -67,34 +93,11 @@ void UFallingMovementComponent::SpeedLimit()
 	}
 }
 
-
-// Called every frame
-void UFallingMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+FVector UFallingMovementComponent::ScaleInput(FVector Input, float Scale)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
-	Movement();
+	Scale = FMath::Clamp(Scale, -1.0f, 1.0f);
+	Input.Normalize();
+	Input *= Scale;
 
-	Falling();
-
-	Damping();
-
-	SpeedLimit();
-}
-
-void UFallingMovementComponent::AddMovementInput(FVector Input)
-{
-	if (GetNetMode() == NM_Standalone)
-	{
-		Input.Normalize();
-		InputLast += Input;
-		return;
-	}
-	
-	if (GetNetMode() == NM_Client)
-	{
-		SendMovementInputToServer(Input);
-		Input.Normalize();
-		InputLast += Input;
-	}
+	return Input;
 }
