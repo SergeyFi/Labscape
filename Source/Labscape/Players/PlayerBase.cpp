@@ -11,6 +11,7 @@ APlayerBase::APlayerBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("Health");
+	FallingMovementComponent = CreateDefaultSubobject<UFallingMovementComponent>("FallingMovement");
 }
 
 // Called when the game starts or when spawned
@@ -86,10 +87,4 @@ void APlayerBase::Tick(float DeltaTime)
 void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	if (GetNetMode() == NM_Client || GetNetMode() == NM_Standalone)
-	{
-		//PlayerInputComponent->BindAxis("MoveLeftRight", this, &APlayerBase::OnMoveLeftRight);
-		//PlayerInputComponent->BindAxis("MoveForwardBackward", this, &APlayerBase::OnMoveForwardBackward);
-	}
 }

@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Labscape/Components/ScoreComponent.h"
 #include "Labscape/Components/Health/HealthComponent.h"
+#include "Labscape/Components/FallingMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlayerBase.generated.h"
 
@@ -35,6 +36,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UHealthComponent* HealthComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	UFallingMovementComponent* FallingMovementComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerBase")
 	float PlayerMovementScoreScale = 0.001f;
