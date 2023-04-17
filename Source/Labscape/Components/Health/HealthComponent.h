@@ -7,7 +7,9 @@
 #include "HealthSubcomponent.h"
 #include "HealthComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthEvent, int32, Health);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealthEvent);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthDamageEvent, int32, Damage);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LABSCAPE_API UHealthComponent : public UActorComponent
@@ -31,7 +33,10 @@ public:
 	void Kill();
 	
 	UPROPERTY(BlueprintAssignable, Category = "Health")
-	FHealthEvent OnHealthCountChanged;
+	FHealthDamageEvent OnDamage;
+
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FHealthEvent OnHealthEnd;
 
 protected:
 
@@ -45,9 +50,4 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	bool bGodMode;
-
-private:
-
-	UFUNCTION(Client, Reliable)
-	void UpdateHealthOnClient(int32 HealthCount);
 };

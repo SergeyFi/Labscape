@@ -51,7 +51,7 @@ private:
 	void AddScoreForMovement(float DeltaTime);
 
 	UFUNCTION()
-	void OnHealthCountChanged(int32 Count);
+	void OnHealthDamage(int32 Damage);
 
 	UFUNCTION()
 	void OnMoveLeftRight(float Value);

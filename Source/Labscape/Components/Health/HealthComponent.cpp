@@ -15,18 +15,18 @@ void UHealthComponent::AddDamage(int32 Damage)
 {
 	if (GetOwnerRole() == ROLE_Authority)
 	{
-		if (!bGodMode)
+		if (!bGodMode && Health)
 		{
 			Health -= Damage;
 
-			if (Health < 0)
+			if (Health <= 0)
 			{
 				Health = 0;
+				
+				OnHealthEnd.Broadcast();
 			}
 
-			OnHealthCountChanged.Broadcast(Health);
-
-			UpdateHealthOnClient(Health);
+			OnDamage.Broadcast(Damage);
 		}
 	}
 }
@@ -43,10 +43,7 @@ bool UHealthComponent::HealthIsOver()
 
 void UHealthComponent::Kill()
 {
-	if (!bGodMode)
-	{
-		AddDamage(Health);
-	}
+	AddDamage(Health);
 }
 
 void UHealthComponent::BeginPlay()
@@ -60,10 +57,4 @@ void UHealthComponent::BeginPlay()
 			Subcomponent->Init(GetOwner<APawn>());
 		}
 	}
-}
-
-void UHealthComponent::UpdateHealthOnClient_Implementation(int32 HealthCount)
-{
-	Health = HealthCount;
-	OnHealthCountChanged.Broadcast(Health);
 }

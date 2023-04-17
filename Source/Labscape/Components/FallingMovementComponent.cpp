@@ -15,14 +15,17 @@ UFallingMovementComponent::UFallingMovementComponent()
 void UFallingMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
-	Movement();
 
-	Falling();
+	if (RootComponent->IsSimulatingPhysics())
+	{
+		Movement();
 
-	Damping();
+		Falling();
 
-	SpeedLimit();
+		Damping();
+
+		SpeedLimit();
+	}
 
 	InputSum = FVector::Zero();
 }

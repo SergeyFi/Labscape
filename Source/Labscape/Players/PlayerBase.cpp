@@ -19,7 +19,7 @@ void APlayerBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	HealthComponent->OnHealthCountChanged.AddDynamic(this, &APlayerBase::OnHealthCountChanged);
+	HealthComponent->OnDamage.AddDynamic(this, &APlayerBase::OnHealthDamage);
 }
 
 void APlayerBase::PossessedBy(AController* NewController)
@@ -45,7 +45,7 @@ void APlayerBase::AddScoreForMovement(float DeltaTime)
 	}
 }
 
-void APlayerBase::OnHealthCountChanged(int32 Count)
+void APlayerBase::OnHealthDamage(int32 Damage)
 {
 	if (SoundDamage)
 	{
