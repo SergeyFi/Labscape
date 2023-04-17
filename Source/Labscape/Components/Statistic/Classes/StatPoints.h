@@ -23,5 +23,5 @@ public:
 
 private:
 
-	float ScoreForPoint = 10.0f;
+	float ScoreForPoint = 400.0f;
 };

@@ -23,6 +23,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Statistic")
 	void SaveStatistic();
 
+	UFUNCTION(BlueprintPure, Category = "Statistic")
+	float GetCurrentScore();
+
 protected:
 
 	virtual void BeginPlay() override;

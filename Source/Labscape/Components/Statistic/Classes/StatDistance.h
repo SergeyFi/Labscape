@@ -23,5 +23,5 @@ public:
 
 private:
 
-	float ScoreCoefficient = 0.1f;
+	float ScoreCoefficient = 0.01f;
 };

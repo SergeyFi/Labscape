@@ -52,6 +52,11 @@ void UStatisticComponent::SaveStatistic()
 	}
 }
 
+float UStatisticComponent::GetCurrentScore()
+{
+	return GetScore(StatisticsCurrent);
+}
+
 void UStatisticComponent::BeginPlay()
 {
 	Super::BeginPlay();
