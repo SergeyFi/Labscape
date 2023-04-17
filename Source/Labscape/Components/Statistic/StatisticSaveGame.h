@@ -32,5 +32,6 @@ class LABSCAPE_API UStatisticSaveGame : public USaveGame
 
 public:
 
+	UPROPERTY()
 	TArray<FStatisticSaveData> Statistics;
 };

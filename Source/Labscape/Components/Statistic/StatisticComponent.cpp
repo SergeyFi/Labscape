@@ -38,7 +38,7 @@ void UStatisticComponent::SaveStatistic()
 {
 	if (IsSaveExist(StatisticBestSlot))
 	{
-		if (GetScore(StatisticsCurrent) > GetScore(StatisticsBest))
+		if (IsNewRecord())
 		{
 			SaveStatistics(StatisticBestSlot, StatisticsCurrent);
 		}
@@ -55,6 +55,11 @@ void UStatisticComponent::SaveStatistic()
 float UStatisticComponent::GetCurrentScore()
 {
 	return GetScore(StatisticsCurrent);
+}
+
+bool UStatisticComponent::IsNewRecord()
+{
+	return GetScore(StatisticsCurrent) > GetScore(StatisticsBest);
 }
 
 void UStatisticComponent::BeginPlay()
@@ -76,6 +81,7 @@ void UStatisticComponent::LoadStatistics(const FString& SlotName, TMap<TSubclass
 			FMemoryReader MemReader(StatData.ByteData);
 
 			FObjectAndNameAsStringProxyArchive Ar(MemReader, true);
+			Ar.ArIsSaveGame = true;
 
 			auto StatisticObject = NewObject<UStatistic>(GetOwner(), StatData.StatClass);
 			StatisticObject->Serialize(Ar);
@@ -87,25 +93,29 @@ void UStatisticComponent::LoadStatistics(const FString& SlotName, TMap<TSubclass
 
 void UStatisticComponent::SaveStatistics(const FString& SlotName, const TMap<TSubclassOf<UStatistic>, UStatistic*>& Statistic)
 {
-	auto StatSaveGame = Cast<UStatisticSaveGame>
-	(UGameplayStatics::CreateSaveGameObject(UStatisticSaveGame::StaticClass()));
-			
-	for (auto& StatPair : Statistic)
+	if (!SlotName.IsEmpty())
 	{
-		FStatisticSaveData StatisticData;
-		StatisticData.StatClass = StatPair.Value->StaticClass();
+		auto StatSaveGame = Cast<UStatisticSaveGame>
+		(UGameplayStatics::CreateSaveGameObject(UStatisticSaveGame::StaticClass()));
+			
+		for (auto& StatPair : Statistic)
+		{
+			FStatisticSaveData StatisticData;
+			StatisticData.StatClass = StatPair.Value->GetClass();
 		
-		FMemoryWriter MemWriter(StatisticData.ByteData);
+			FMemoryWriter MemWriter(StatisticData.ByteData);
 		
-		FObjectAndNameAsStringProxyArchive Ar(MemWriter, true);
-		Ar.ArIsSaveGame = true;
+			FObjectAndNameAsStringProxyArchive Ar(MemWriter, true);
+			Ar.ArIsSaveGame = true;
 		
-		StatPair.Value->Serialize(Ar);
+			StatPair.Value->Serialize(Ar);
 
-		StatSaveGame->Statistics.Add(StatisticData);
+			StatSaveGame->Statistics.Add(StatisticData);
+			
+		}
+
+		UGameplayStatics::SaveGameToSlot(StatSaveGame, SlotName, 0);
 	}
-
-	UGameplayStatics::SaveGameToSlot(StatSaveGame, SlotName, 0);
 }
 
 float UStatisticComponent::GetScore(const TMap<TSubclassOf<UStatistic>,UStatistic*>& Statistic) const

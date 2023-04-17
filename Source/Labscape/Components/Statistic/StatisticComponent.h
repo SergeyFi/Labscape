@@ -26,6 +26,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Statistic")
 	float GetCurrentScore();
 
+	UFUNCTION(BlueprintPure, Category = "Statistic")
+	bool IsNewRecord();
+
 protected:
 
 	virtual void BeginPlay() override;
