@@ -90,3 +90,27 @@ UScoreComponent* UBlueprintAssistFunctionLibrary::GetScoreComponent(AActor* Targ
 
 	return nullptr;
 }
+
+UStatisticComponent* UBlueprintAssistFunctionLibrary::GetStatisticComponent(AActor* PlayerPawn)
+{
+	auto Pawn = Cast<APawn>(PlayerPawn);
+
+	if (Pawn)
+	{
+		return Pawn->GetController()->FindComponentByClass<UStatisticComponent>();
+	}
+
+	return nullptr;
+}
+
+UStatistic* UBlueprintAssistFunctionLibrary::GetStatistic(AActor* PlayerPawn, TSubclassOf<UStatistic> StatisticClass)
+{
+	auto StatComp = GetStatisticComponent(PlayerPawn);
+
+	if (StatComp)
+	{
+		return StatComp->GetStatistic(StatisticClass);
+	}
+
+	return nullptr;
+}

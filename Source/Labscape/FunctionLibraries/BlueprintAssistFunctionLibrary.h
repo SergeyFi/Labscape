@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Labscape/Components/ScoreComponent.h"
+#include "Components/Statistic/StatisticComponent.h"
 #include "BlueprintAssistFunctionLibrary.generated.h"
 
 UENUM(BlueprintType)
@@ -36,4 +37,10 @@ class LABSCAPE_API UBlueprintAssistFunctionLibrary : public UBlueprintFunctionLi
 	
 	UFUNCTION(BlueprintPure, Category = "Blueprint assist")
 	static UScoreComponent* GetScoreComponent(AActor* Target);
+
+	UFUNCTION(BlueprintPure, Category = "Statistic")
+	static UStatisticComponent* GetStatisticComponent(AActor* PlayerPawn);
+
+	UFUNCTION(BlueprintPure, Category = "Statistic", meta = (DeterminesOutputType = "StatisticClass"))
+	static UStatistic* GetStatistic(AActor* PlayerPawn, TSubclassOf<UStatistic> StatisticClass);
 };
