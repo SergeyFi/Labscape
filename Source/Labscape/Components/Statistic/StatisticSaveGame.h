@@ -31,6 +31,8 @@ class LABSCAPE_API UStatisticSaveGame : public USaveGame
 	GENERATED_BODY()
 
 public:
+	UPROPERTY()
+	int32 SaveVersion = 0;
 
 	UPROPERTY()
 	TArray<FStatisticSaveData> Statistics;
