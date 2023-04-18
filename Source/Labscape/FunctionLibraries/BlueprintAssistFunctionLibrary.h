@@ -42,5 +42,5 @@ class LABSCAPE_API UBlueprintAssistFunctionLibrary : public UBlueprintFunctionLi
 	static UStatisticComponent* GetStatisticComponent(AActor* PlayerPawn);
 
 	UFUNCTION(BlueprintPure, Category = "Statistic", meta = (DeterminesOutputType = "StatisticClass"))
-	static UStatistic* GetStatistic(AActor* PlayerPawn, TSubclassOf<UStatistic> StatisticClass);
+	static UStatistic* GetStatistic(AActor* PlayerPawn, TSubclassOf<UStatistic> StatisticClass, const EStatisticType Type = EStatisticType::Current);
 };

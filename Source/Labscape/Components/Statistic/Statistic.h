@@ -15,4 +15,17 @@ class LABSCAPE_API UStatistic : public UObject
 public:
 
 	virtual float GetScore();
+
+	UFUNCTION(BlueprintPure, Category = "Statistic")
+	FText GetName();
+
+	UFUNCTION(BlueprintPure, Category = "Statistic")
+	FString GetStringValue();
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly)
+	FText Name = FText::FromString("None");
+
+	virtual FString GetStringValue_Virtual();
 };

@@ -3,3 +3,12 @@
 
 #include "Components/Statistic/Classes/StatGamesPlayed.h"
 
+UStatGamesPlayed::UStatGamesPlayed()
+{
+	Name = FText::FromString("Game number");
+}
+
+FString UStatGamesPlayed::GetStringValue_Virtual()
+{
+	return FString::FromInt(GamesPlayed);
+}

@@ -16,6 +16,12 @@ class LABSCAPE_API UStatGamesPlayed : public UStatistic
 
 public:
 
+	UStatGamesPlayed();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Statistic", SaveGame)
 	int32 GamesPlayed;
+
+protected:
+
+	virtual FString GetStringValue_Virtual() override;
 };

@@ -103,13 +103,13 @@ UStatisticComponent* UBlueprintAssistFunctionLibrary::GetStatisticComponent(AAct
 	return nullptr;
 }
 
-UStatistic* UBlueprintAssistFunctionLibrary::GetStatistic(AActor* PlayerPawn, TSubclassOf<UStatistic> StatisticClass)
+UStatistic* UBlueprintAssistFunctionLibrary::GetStatistic(AActor* PlayerPawn, TSubclassOf<UStatistic> StatisticClass, const EStatisticType Type)
 {
 	auto StatComp = GetStatisticComponent(PlayerPawn);
 
 	if (StatComp)
 	{
-		return StatComp->GetStatistic(StatisticClass);
+		return StatComp->GetStatistic(StatisticClass, Type);
 	}
 
 	return nullptr;

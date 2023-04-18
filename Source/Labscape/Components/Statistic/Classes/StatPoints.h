@@ -16,10 +16,16 @@ class LABSCAPE_API UStatPoints : public UStatistic
 
 public:
 
+	UStatPoints();
+
 	virtual float GetScore() override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Statistic", SaveGame)
 	int32 PointsPicked;
+
+protected:
+
+	virtual FString GetStringValue_Virtual() override;
 
 private:
 

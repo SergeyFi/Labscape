@@ -7,3 +7,18 @@ float UStatistic::GetScore()
 {
 	return 0.0f;
 }
+
+FText UStatistic::GetName()
+{
+	return Name;
+}
+
+FString UStatistic::GetStringValue()
+{
+	return GetStringValue_Virtual();
+}
+
+FString UStatistic::GetStringValue_Virtual()
+{
+	return "None";
+}

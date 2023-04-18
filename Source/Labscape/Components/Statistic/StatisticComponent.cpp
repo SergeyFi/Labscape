@@ -12,33 +12,57 @@ UStatisticComponent::UStatisticComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-UStatistic* UStatisticComponent::GetStatistic(TSubclassOf<UStatistic> StatisticClass)
+UStatistic* UStatisticComponent::GetStatistic(TSubclassOf<UStatistic> StatisticClass,  const EStatisticType Type)
 {
+	auto StatisticMap = StatisticsCurrent;
+
+	if (Type == EStatisticType::Preview)
+	{
+		StatisticMap = StatisticsLast;
+	}
+	else if (Type == EStatisticType::Best)
+	{
+		StatisticMap = StatisticsBest;
+	}
+	
 	if (StatisticClass)
 	{
-		auto StatisticFind = StatisticsCurrent.Find(StatisticClass);
+		auto StatisticFind = StatisticMap.Find(StatisticClass);
 
 		if (StatisticFind)
 		{
 			return *StatisticFind;
-		}
-		else
-		{
-			auto NewStatistic = NewObject<UStatistic>(GetOwner(),StatisticClass);
-			StatisticsCurrent.Add(StatisticClass, NewStatistic);
-
-			return NewStatistic;
 		}
 	}
 
 	return nullptr;
 }
 
+TArray<UStatistic*> UStatisticComponent::GetStatistics(const EStatisticType Type)
+{
+	TArray<UStatistic*> Statistics;
+	
+	if (Type == EStatisticType::Current)
+	{
+		StatisticsCurrent.GenerateValueArray(Statistics);
+	}
+	else if (Type == EStatisticType::Best)
+	{
+		StatisticsBest.GenerateValueArray(Statistics);
+	}
+	else if (Type == EStatisticType::Preview)
+	{
+		StatisticsLast.GenerateValueArray(Statistics);
+	}
+
+	return Statistics;
+}
+
 void UStatisticComponent::SaveStatistic()
 {
 	if (IsSaveExist(StatisticBestSlot))
 	{
-		if (IsNewRecord())
+		if (GetScore(StatisticsCurrent) > GetScore(StatisticsBest))
 		{
 			SaveStatistics(StatisticBestSlot, StatisticsCurrent);
 		}
@@ -52,19 +76,29 @@ void UStatisticComponent::SaveStatistic()
 	}
 }
 
-float UStatisticComponent::GetCurrentScore()
+float UStatisticComponent::GetScore(const EStatisticType Type)
 {
-	return GetScore(StatisticsCurrent);
-}
-
-bool UStatisticComponent::IsNewRecord()
-{
-	return GetScore(StatisticsCurrent) > GetScore(StatisticsBest);
+	if (Type == EStatisticType::Current)
+	{
+		return GetScore(StatisticsCurrent);
+	}
+	else if (Type == EStatisticType::Best)
+	{
+		return GetScore(StatisticsBest);
+	}
+	else if (Type == EStatisticType::Preview)
+	{
+		return GetScore(StatisticsLast);
+	}
+	
+	return 0.0f;
 }
 
 void UStatisticComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InitStatisticObjects();
 
 	LoadStatistics(StatisticBestSlot, StatisticsBest);
 	LoadStatistics(StatisticLastSlot, StatisticsLast);
@@ -133,4 +167,22 @@ float UStatisticComponent::GetScore(const TMap<TSubclassOf<UStatistic>,UStatisti
 bool UStatisticComponent::IsSaveExist(const FString& SlotName)
 {
 	return UGameplayStatics::DoesSaveGameExist(SlotName,0);
+}
+
+void UStatisticComponent::InitStatisticObjects()
+{
+	for (TObjectIterator<UClass> It; It; ++It)
+	{
+		if(It->IsChildOf(UStatistic::StaticClass()) && !It->HasAnyClassFlags(CLASS_Abstract))
+		{
+			auto NewStatistic = NewObject<UStatistic>(GetOwner(), *It);
+			StatisticsCurrent.Add(*It, NewStatistic);
+
+			NewStatistic = NewObject<UStatistic>(GetOwner(), *It);
+			StatisticsLast.Add(*It, NewStatistic);
+
+			NewStatistic = NewObject<UStatistic>(GetOwner(), *It);
+			StatisticsBest.Add(*It, NewStatistic);
+		}
+	}
 }

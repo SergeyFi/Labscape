@@ -16,12 +16,18 @@ class LABSCAPE_API UStatDistance : public UStatistic
 
 public:
 
+	UStatDistance();
+
 	virtual float GetScore() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Statistic", SaveGame)
 	float FallingDistance;
 
+protected:
+
+	virtual FString GetStringValue_Virtual() override;
+
 private:
 
-	float ScoreCoefficient = 0.01f;
+	float ScoreCoefficient = 0.5f;
 };
