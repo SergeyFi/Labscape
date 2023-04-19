@@ -42,7 +42,17 @@ void UFallingMovementComponent::AddMovementInput(FVector Input, float Scale)
 
 float UFallingMovementComponent::GetFallingSpeed()
 {
-	return FMath::Abs(GetOwner()->GetVelocity().Z);
+	return -GetOwner()->GetVelocity().Z;
+}
+
+void UFallingMovementComponent::AdjustVelocityScaler(float Value)
+{
+	FallingVelocityModificator += Value;
+}
+
+void UFallingMovementComponent::AdjustMaxSpeed(float Value)
+{
+	MaxFallingSpeed += Value;
 }
 
 // Called when the game starts
@@ -60,9 +70,16 @@ void UFallingMovementComponent::SendMovementInputToServer_Implementation(FVector
 
 void UFallingMovementComponent::Falling()
 {
-	if (FMath::Abs(GetOwner()->GetVelocity().Z) < MaxFallingSpeed)
+	auto FallingVelocityModificatorTemp = FallingVelocityModificator;
+
+	if (FallingVelocityModificator < 0.0f && GetFallingSpeed() < MinFallingSpeed)
 	{
-		RootComponent->AddForce(GetOwner()->GetActorUpVector() * VelocityCoefficient * -FallingVelocity);
+		FallingVelocityModificatorTemp = 0.0f;
+	}
+	
+	if (GetFallingSpeed() < MaxFallingSpeed)
+	{
+		RootComponent->AddForce(GetOwner()->GetActorUpVector() * VelocityCoefficient * -(FallingVelocityScaler+FallingVelocityModificatorTemp));
 	}
 }
 

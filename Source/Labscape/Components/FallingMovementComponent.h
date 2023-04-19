@@ -25,6 +25,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Input")
 	float GetFallingSpeed();
 
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void AdjustVelocityScaler(float Value);
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void AdjustMaxSpeed(float Value);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -33,7 +39,10 @@ protected:
 	float MaxFallingSpeed;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	float FallingVelocity;
+	float MinFallingSpeed = 200.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	float FallingVelocityScaler = 100.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	float MovementSpeed = 900.0f;
@@ -51,6 +60,8 @@ protected:
 private:
 
 	float VelocityCoefficient = 1000.0f;
+
+	float FallingVelocityModificator;
 	
 	void Falling();
 
