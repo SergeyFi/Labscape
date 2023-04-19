@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/CameraComponent.h"
 #include "Components/ActorComponent.h"
 #include "Components/FallingMovementComponent.h"
 #include "BoostComponent.generated.h"
@@ -16,6 +17,8 @@ class LABSCAPE_API UBoostComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UBoostComponent();
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Boost")
 	void Boost();
@@ -33,8 +36,22 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Boost")
 	float MaxSpeedMod = 3000.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Boost")
+	float FOVAdjust = 30.0f;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Boost")
+	float FOVIncreaseSpeed = 18.0f;
+
 private:
 
 	UPROPERTY()
 	UFallingMovementComponent* FallingMovement;
+
+	UCameraComponent* Camera;
+
+	float CurrentFov = 0.0f;
+
+	bool bBoost;
+
+	void FOVBoost(float DeltaTime);
 };
