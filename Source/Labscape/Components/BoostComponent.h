@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/ActorComponent.h"
 #include "Components/FallingMovementComponent.h"
+#include "NiagaraComponent.h"
 #include "BoostComponent.generated.h"
 
 
@@ -42,6 +43,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Boost")
 	float FOVIncreaseSpeed = 18.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Boost|FX")
+	UNiagaraSystem* NiagaraSystem;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Boost|FX")
+	FVector FXOffset = {0.0f, 0.0f , 100.0f};
+	
+
 private:
 
 	UPROPERTY()
@@ -53,5 +61,10 @@ private:
 
 	bool bBoost;
 
+	UPROPERTY()
+	UNiagaraComponent* NiagaraComponent;
+
 	void FOVBoost(float DeltaTime);
+	
+	void InitFX();
 };

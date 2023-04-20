@@ -2,6 +2,7 @@
 
 
 #include "Components/BoostComponent.h"
+#include "NiagaraFunctionLibrary.h"
 
 // Sets default values for this component's properties
 UBoostComponent::UBoostComponent()
@@ -25,6 +26,11 @@ void UBoostComponent::Boost()
 		FallingMovement->AdjustVelocityScaler(VelocityScalerMod);
 		FallingMovement->AdjustMaxSpeed(MaxSpeedMod);
 		bBoost = true;
+
+		if (NiagaraComponent)
+		{
+			NiagaraComponent->Activate();
+		}
 	}
 }
 
@@ -35,6 +41,11 @@ void UBoostComponent::BoostStop()
 		FallingMovement->AdjustVelocityScaler(-VelocityScalerMod);
 		FallingMovement->AdjustMaxSpeed(-MaxSpeedMod);
 		bBoost = false;
+
+		if (NiagaraComponent)
+		{
+			NiagaraComponent->Deactivate();
+		}
 	}
 }
 
@@ -45,6 +56,9 @@ void UBoostComponent::BeginPlay()
 
 	FallingMovement = GetOwner()->FindComponentByClass<UFallingMovementComponent>();
 	Camera = GetOwner()->FindComponentByClass<UCameraComponent>();
+
+
+	InitFX();
 }
 
 void UBoostComponent::FOVBoost(float DeltaTime)
@@ -76,5 +90,18 @@ void UBoostComponent::FOVBoost(float DeltaTime)
 				CurrentFov -= FOVIncreaseValue;
 			}
 		}
+	}
+}
+
+void UBoostComponent::InitFX()
+{
+	if (NiagaraSystem)
+	{
+		NiagaraComponent = UNiagaraFunctionLibrary::SpawnSystemAttached
+		(NiagaraSystem, GetOwner()->GetRootComponent(), {}, {}, {0.0f, 0.0f, 0.0f},
+		 EAttachLocation::SnapToTarget, false);
+
+		NiagaraComponent->AddLocalOffset(FXOffset);
+		NiagaraComponent->Deactivate();
 	}
 }
