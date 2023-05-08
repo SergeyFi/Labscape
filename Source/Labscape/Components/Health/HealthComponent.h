@@ -31,9 +31,15 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void Kill();
+
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void SuppressDamage(bool bSuppress);
 	
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FHealthDamageEvent OnDamage;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FHealthDamageEvent OnDamageSuppress;
 
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FHealthEvent OnHealthEnd;
@@ -50,4 +56,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	bool bGodMode;
+
+private:
+
+	bool bSuppressDamage;
 };

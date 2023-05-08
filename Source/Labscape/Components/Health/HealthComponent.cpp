@@ -17,16 +17,23 @@ void UHealthComponent::AddDamage(int32 Damage)
 	{
 		if (!bGodMode && Health)
 		{
-			Health -= Damage;
-
-			if (Health <= 0)
+			if (!bSuppressDamage)
 			{
-				Health = 0;
-				
-				OnHealthEnd.Broadcast();
-			}
+				Health -= Damage;
 
-			OnDamage.Broadcast(Damage);
+				if (Health <= 0)
+				{
+					Health = 0;
+				
+					OnHealthEnd.Broadcast();
+				}
+
+				OnDamage.Broadcast(Damage);
+			}
+			else
+			{
+				OnDamageSuppress.Broadcast(Damage);
+			}
 		}
 	}
 }
@@ -43,7 +50,17 @@ bool UHealthComponent::HealthIsOver()
 
 void UHealthComponent::Kill()
 {
-	AddDamage(Health);
+	if (!bGodMode)
+	{
+		OnDamage.Broadcast(Health);
+		OnHealthEnd.Broadcast();
+		Health = 0;
+	}
+}
+
+void UHealthComponent::SuppressDamage(bool bSuppress)
+{
+	bSuppressDamage = bSuppress;
 }
 
 void UHealthComponent::BeginPlay()
