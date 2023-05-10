@@ -34,6 +34,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void SuppressDamage(bool bSuppress);
+
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void AddHealth(int32 Count);
 	
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FHealthDamageEvent OnDamage;
@@ -44,12 +47,18 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FHealthEvent OnHealthEnd;
 
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FHealthEvent OnHealthChanged;
+
 protected:
 
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	int32 Health;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	int32 HealthMax;
 
 	UPROPERTY(EditDefaultsOnly, Instanced, Category = "Health")
 	TArray<UHealthSubcomponent*> Subcomponents;

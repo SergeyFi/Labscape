@@ -29,6 +29,7 @@ void UHealthComponent::AddDamage(int32 Damage)
 				}
 
 				OnDamage.Broadcast(Damage);
+				OnHealthChanged.Broadcast();
 			}
 			else
 			{
@@ -54,6 +55,7 @@ void UHealthComponent::Kill()
 	{
 		OnDamage.Broadcast(Health);
 		OnHealthEnd.Broadcast();
+		OnHealthChanged.Broadcast();
 		Health = 0;
 	}
 }
@@ -61,6 +63,21 @@ void UHealthComponent::Kill()
 void UHealthComponent::SuppressDamage(bool bSuppress)
 {
 	bSuppressDamage = bSuppress;
+}
+
+void UHealthComponent::AddHealth(int32 Count)
+{
+	if (Count > 0)
+	{
+		Health += Count;
+
+		if (Health > HealthMax)
+		{
+			Health = HealthMax;
+		}
+
+		OnHealthChanged.Broadcast();
+	}
 }
 
 void UHealthComponent::BeginPlay()
