@@ -25,7 +25,7 @@ void APickable::BeginPlay()
 
 void APickable::OnGather(AActor* PlayerTarget)
 {
-	
+	PlayGatherSound();
 }
 
 void APickable::OnPickableOverlap(AActor* This, AActor* Other)
@@ -35,6 +35,14 @@ void APickable::OnPickableOverlap(AActor* This, AActor* Other)
 		Target = Other;
 		SetActorTickEnabled(true);
 		OnGather(Target);
+	}
+}
+
+void APickable::PlayGatherSound()
+{
+	if (GatherSound)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), GatherSound);
 	}
 }
 

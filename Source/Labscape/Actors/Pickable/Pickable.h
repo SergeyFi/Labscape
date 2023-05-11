@@ -32,6 +32,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Pickable")
 	float GatheringTimeMax = 1.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Pickable")
+	USoundBase* GatherSound;
+
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* SphereCollision;
 
@@ -46,4 +49,5 @@ private:
 	UFUNCTION()
 	void OnPickableOverlap(AActor* This, AActor* Other);
 
+	void PlayGatherSound();
 };
