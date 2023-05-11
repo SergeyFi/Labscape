@@ -12,6 +12,7 @@ APickable::APickable()
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	SphereCollision = CreateDefaultSubobject<USphereComponent>("SphereCollision");
+	SphereCollision->SetSphereRadius(230.0f);
 	SphereCollision->SetCollisionProfileName("OverlapAll");
 }
 

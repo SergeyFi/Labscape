@@ -24,7 +24,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Pickable")
-	float GatheringSpeed = 5.0f;
+	float GatheringSpeed = 14.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Pickable")
 	float GatherDistance = 10.0f;

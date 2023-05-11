@@ -25,6 +25,8 @@ UCLASS()
 class LABSCAPE_API UBlueprintAssistFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+
+public:
 	
 	UFUNCTION(BlueprintPure, Category = "Blueprint assist", meta = (WorldContext = "WorldContextObject"))
 	static EBPNetMode GetNetMode(UObject* WorldContextObject);
