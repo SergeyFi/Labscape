@@ -3,6 +3,7 @@
 
 #include "Actors/Pickable/Pickable.h"
 #include "Players/PlayerBase.h"
+#include "FunctionLibraries/BlueprintAssistFunctionLibrary.h"
 
 // Sets default values
 APickable::APickable()
@@ -27,6 +28,8 @@ void APickable::BeginPlay()
 void APickable::OnGather(AActor* PlayerTarget)
 {
 	PlayGatherSound();
+
+	AddScore(PlayerTarget);
 }
 
 void APickable::OnPickableOverlap(AActor* This, AActor* Other)
@@ -45,6 +48,19 @@ void APickable::PlayGatherSound()
 	{
 		UGameplayStatics::PlaySound2D(GetWorld(), GatherSound);
 	}
+}
+
+void APickable::AddScore(AActor* Player)
+{
+	if (ScoreForGather > 0.0f)
+	{
+		UBlueprintAssistFunctionLibrary::GetScoreComponent(Player)->AddScore(ScoreForGather);
+	}
+}
+
+UStatistic* APickable::GetStatisticInternal(AActor* Player, TSubclassOf<UStatistic> StatisticClass)
+{
+	return UBlueprintAssistFunctionLibrary::GetStatistic(Player, StatisticClass);
 }
 
 // Called every frame

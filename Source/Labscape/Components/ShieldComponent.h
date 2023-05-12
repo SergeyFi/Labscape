@@ -23,6 +23,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Shield")
 	void Disable();
 
+	UFUNCTION(BlueprintCallable, Category = "Shield")
+	void AddShieldCell(int32 Count);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -34,7 +37,13 @@ protected:
 	UMaterial* Material;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Shield")
-	int32 ShieldCells;
+	int32 ShieldCells = 0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Shield")
+	int32 ShieldCellsMax = 1;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Shield")
+	float ShieldDuration = 3.0f;
 
 private:
 
@@ -46,8 +55,7 @@ private:
 
 	bool bShieldEnabled;
 
-	void CreateShieldMesh();
+	FTimerHandle TimerShield;
 
-	UFUNCTION()
-	void OnHealthSuppress(int32 Damage);
+	void CreateShieldMesh();
 };

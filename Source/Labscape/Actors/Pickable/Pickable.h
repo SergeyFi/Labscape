@@ -33,12 +33,21 @@ protected:
 	float GatheringTimeMax = 1.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Pickable")
+	float ScoreForGather = 0.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Pickable")
 	USoundBase* GatherSound;
 
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* SphereCollision;
 
 	virtual void OnGather(AActor* PlayerTarget);
+	
+	template<class T>
+	T* GetStatistic(AActor* Player)
+	{
+		return Cast<T>(GetStatisticInternal(Player, T::StaticClass()));
+	}
 
 private:
 
@@ -50,4 +59,8 @@ private:
 	void OnPickableOverlap(AActor* This, AActor* Other);
 
 	void PlayGatherSound();
+
+	void AddScore(AActor* Player);
+
+	class UStatistic* GetStatisticInternal(AActor* Player, TSubclassOf<UStatistic> StatisticClass);
 };

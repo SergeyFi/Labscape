@@ -13,11 +13,13 @@ UShieldComponent::UShieldComponent()
 
 void UShieldComponent::Enable()
 {
-	if (ShieldCells > 0)
+	if (!bShieldEnabled && ShieldCells > 0)
 	{
 		ShieldMesh->SetVisibility(true);
 		HealthComponent->SuppressDamage(true);
 		bShieldEnabled = true;
+		ShieldCells -= 1;
+		GetWorld()->GetTimerManager().SetTimer(TimerShield, this, &UShieldComponent::Disable, ShieldDuration);
 	}
 }
 
@@ -26,6 +28,19 @@ void UShieldComponent::Disable()
 	ShieldMesh->SetVisibility(false);
 	HealthComponent->SuppressDamage(false);
 	bShieldEnabled = false;
+}
+
+void UShieldComponent::AddShieldCell(int32 Count)
+{
+	if (Count > 0)
+	{
+		ShieldCells += Count;
+
+		if (ShieldCells > ShieldCellsMax)
+		{
+			ShieldCells = ShieldCellsMax;
+		}
+	}
 }
 
 // Called when the game starts
@@ -38,8 +53,6 @@ void UShieldComponent::BeginPlay()
 	if (HealthComponent && Mesh && Material)
 	{
 		CreateShieldMesh();
-
-		HealthComponent->OnDamageSuppress.AddDynamic(this, &UShieldComponent::OnHealthSuppress);
 	}
 }
 
@@ -52,15 +65,4 @@ void UShieldComponent::CreateShieldMesh()
 	ShieldMesh->SetupAttachment(this);
 	ShieldMesh->SetVisibility(false);
 	ShieldMesh->RegisterComponent();
-}
-
-void UShieldComponent::OnHealthSuppress(int32 Damage)
-{
-	ShieldCells -= 1;
-
-	if (ShieldCells <= 0)
-	{
-		ShieldCells = 0;
-		Disable();
-	}
 }
